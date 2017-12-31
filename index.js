@@ -32,6 +32,24 @@ module.exports = {
     return new mergeTrees(trees);
   },
 
+  treeForPublic: function(defaultTree) {
+    var trees = [];
+    var swiperPath = path.join(path.dirname(require.resolve('swiper')), '..');
+    var browserVendorLib = new Funnel(swiperPath, {
+      srcDir: 'js/maps',
+      destDir: 'assets/maps',
+      include: ['swiper.min.js.map']
+    });
+
+    if (defaultTree !== undefined) {
+      trees.push(defaultTree);
+    }
+
+    trees.push(browserVendorLib);
+
+    return new mergeTrees(trees);
+  },
+
   included: function(app) {
     this._super.included.apply(this, arguments);
 
