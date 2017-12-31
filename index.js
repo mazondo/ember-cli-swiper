@@ -20,6 +20,12 @@ module.exports = {
       if (relativePath.indexOf('css') !== -1) {
         return content;
       }
+
+      // HACK: the sourcemap included in swiper library breaks the build for production sourcemaps
+      // this just removes it.  I've tried to add a treeForPublic to include the sourcemap so it loads
+      // which works, but ember then thinks its the only source map and ignores the rest of the app
+      // the real fix is probably to import the ESModules and have ember-cli generate its own sourcemaps
+      content = content.replace('//# sourceMappingURL=maps/swiper.min.js.map', '');
       return `if (typeof FastBoot === 'undefined') { ${content} }`
     });
 
